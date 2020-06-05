@@ -11,12 +11,15 @@ func triggerScreenShot(t time.Time) {
 	min := 5
 	max := 15
 	randNumber := rand.Intn(max-min) + min
+
 	captureScreeShot()
 	logger.Printf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
+	logger.Printf(" Windows : %v", activeWindows)
 
 	muTx.Lock()
 	keyPress = 0
 	mouseMovement = 0
+	activeWindows = nil
 	muTx.Unlock()
 
 	nextTrigger = t.Add(time.Minute * time.Duration(randNumber))

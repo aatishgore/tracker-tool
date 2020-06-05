@@ -7,8 +7,14 @@ import (
 	"sync"
 	"time"
 
+	"github.com/go-vgo/robotgo"
 	"github.com/stackimpact/stackimpact-go"
 )
+
+type activeWindow struct {
+	currentTime  string
+	activeWindow string
+}
 
 var (
 	prevX         int16 = 0
@@ -20,7 +26,9 @@ var (
 	muTx               = &sync.Mutex{}
 	logger        *log.Logger
 	agent         *stackimpact.Agent
+	prevTitle     string = ""
 )
+var activeWindows = make([]activeWindow, 0)
 
 func doEvery(d time.Duration, f func(time.Time)) {
 	for x := range time.Tick(d) {
@@ -31,6 +39,14 @@ func doEvery(d time.Duration, f func(time.Time)) {
 func startWorker(t time.Time) {
 	if debug {
 		fmt.Printf("Current Time is %s \nTrigger Time is %s \n condition is %v\n ", t.Format("2006-01-02 15:04:05"), nextTrigger.Format("2006-01-02 15:04:05"), t.Sub(nextTrigger))
+	}
+	title := robotgo.GetTitle()
+	if title != prevTitle {
+		prevTitle = title
+		activeWindows = append(activeWindows, activeWindow{
+			t.Format("2006-01-02 15:04:05"),
+			title,
+		})
 	}
 
 	if t.Sub(nextTrigger) > 0 {
