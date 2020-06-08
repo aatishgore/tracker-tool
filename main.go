@@ -98,6 +98,7 @@ func setupCloseHandler() {
 	}()
 }
 
+// loading up configuration required
 func boostrap() {
 	parseDebug := flag.Bool("debug", false, "set debug")
 	flag.Parse()

@@ -35,7 +35,7 @@ func captureScreeShot() {
 	fileName := fmt.Sprintf("all_%s.png", currentTime.Format("2006-01-02 15:04:05"))
 
 	save(img, fileName)
-
+	//file upload to server
 	// path, err := os.Getwd()
 	// if err != nil {
 	// 	log.Println(err)
