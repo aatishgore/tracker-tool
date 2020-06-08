@@ -11,7 +11,7 @@ func openDb() *sql.DB {
 	return database
 }
 
-func logToDB(window string, time float64) {
+func logToDB(window string, time int) {
 	database := openDb()
 	statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY, window TEXT, time TEXT)")
 	statement.Exec()

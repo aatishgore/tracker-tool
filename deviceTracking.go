@@ -6,7 +6,7 @@ import (
 	"github.com/go-vgo/robotgo"
 )
 
-func observerInputMovment() {
+func observerInputMovement() {
 
 	evChan := robotgo.EventStart()
 	for e := range evChan {

@@ -28,7 +28,6 @@ func captureScreeShot() {
 	}
 
 	// Capture all desktop region into an image.
-	fmt.Printf("%v\n", all)
 	img, err := screenshot.Capture(all.Min.X, all.Min.Y, all.Dx(), all.Dy())
 	if err != nil {
 		panic(err)
