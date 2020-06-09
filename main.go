@@ -30,6 +30,7 @@ var (
 
 	prevTitle      string    = ""
 	activeWindowOn time.Time = time.Now()
+	mpin           string    = ""
 )
 
 // this function would execute every specific duration
@@ -63,6 +64,7 @@ func startWorker(t time.Time) {
 }
 func main() {
 	welcomeMessage()
+	requestMpin()
 	// call load up function
 	boostrap()
 	if logInfo {
