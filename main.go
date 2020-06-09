@@ -12,7 +12,6 @@ import (
 	"flag"
 
 	"github.com/go-vgo/robotgo"
-	"github.com/stackimpact/stackimpact-go"
 )
 
 type activeWindow struct {
@@ -21,15 +20,14 @@ type activeWindow struct {
 }
 
 var (
-	prevX          int16 = 0
-	prevY          int16 = 0
-	keyPress       int   = 0
-	mouseMovement  int   = 0
-	nextTrigger    time.Time
-	debug          bool
-	muTx           = &sync.Mutex{}
-	logger         *log.Logger
-	agent          *stackimpact.Agent
+	keyPress      int = 0
+	mouseMovement int = 0
+	nextTrigger   time.Time
+	debug         bool
+	logInfo       bool
+	muTx          = &sync.Mutex{}
+	logger        *log.Logger
+
 	prevTitle      string    = ""
 	activeWindowOn time.Time = time.Now()
 )
@@ -67,13 +65,15 @@ func main() {
 	welcomeMessage()
 	// call load up function
 	boostrap()
-	f, err := os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Println(err)
-	}
-	defer f.Close()
-	logger = log.New(f, "Date", log.LstdFlags)
+	if logInfo {
 
+		f, err := os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Println(err)
+		}
+		defer f.Close()
+		logger = log.New(f, "Date", log.LstdFlags)
+	}
 	nextTrigger = time.Now().Add(time.Second * 10)
 	go observerInputMovement()
 	// clean function to be called
@@ -101,14 +101,12 @@ func setupCloseHandler() {
 // loading up configuration required
 func boostrap() {
 	parseDebug := flag.Bool("debug", false, "set debug")
+	parseLog := flag.Bool("log", false, "set debug")
 	flag.Parse()
 	debug = *parseDebug
+	logInfo = *parseLog
 	// check if db file exist, if not create one
 	touchFile("wfh.db")
-	agent = stackimpact.Start(stackimpact.Options{
-		AgentKey: "924ed3987351cf81f7af8b9431eff889720c6a13",
-		AppName:  "MyGoApp",
-	})
 
 }
 
