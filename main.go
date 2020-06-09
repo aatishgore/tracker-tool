@@ -12,7 +12,6 @@ import (
 	"flag"
 
 	"github.com/go-vgo/robotgo"
-	"github.com/stackimpact/stackimpact-go"
 )
 
 type activeWindow struct {
@@ -21,18 +20,18 @@ type activeWindow struct {
 }
 
 var (
-	prevX          int16 = 0
-	prevY          int16 = 0
-	keyPress       int   = 0
-	mouseMovement  int   = 0
-	nextTrigger    time.Time
-	debug          bool
-	muTx           = &sync.Mutex{}
-	logger         *log.Logger
-	agent          *stackimpact.Agent
+	keyPress      int = 0
+	mouseMovement int = 0
+	nextTrigger   time.Time
+	debug         bool
+	logInfo       bool
+	muTx          = &sync.Mutex{}
+	logger        *log.Logger
+
 	prevTitle      string    = ""
 	activeWindowOn time.Time = time.Now()
 	captureStart   bool      = false
+	mpin           string    = ""
 )
 
 // this function would execute every specific duration
@@ -45,21 +44,14 @@ func doEvery(d time.Duration, f func(time.Time)) {
 func startWorker(t time.Time) {
 	if captureStart {
 		fmt.Println("capturing screen")
-		// get process id
-		pid := robotgo.GetPID()
-
 		// get current active window app name by process id
-		name, err := robotgo.FindName(pid)
-		if err == nil {
-			if name != prevTitle {
-				diff := calculateTimeDifference(t, activeWindowOn)
-				activeWindowOn = t
-				logToDB(prevTitle, diff)
-				prevTitle = name
-			}
+		name := robotgo.GetTitle()
 
-		} else {
-			fmt.Println(err)
+		if name != prevTitle {
+			diff := calculateTimeDifference(t, activeWindowOn)
+			activeWindowOn = t
+			logToDB(prevTitle, diff)
+			prevTitle = name
 		}
 
 		if t.Sub(nextTrigger) > 0 {
@@ -67,7 +59,6 @@ func startWorker(t time.Time) {
 		}
 	} else {
 		fmt.Println("not capturing screen")
-
 	}
 
 }
@@ -75,6 +66,7 @@ func main() {
 	///	log.SetOutput(ioutil.Discard)
 
 	welcomeMessage()
+	requestMpin()
 	// call load up function
 	boostrap()
 
@@ -84,7 +76,6 @@ func main() {
 	}
 	defer f.Close()
 	logger = log.New(f, "Date", log.LstdFlags)
-
 	nextTrigger = time.Now().Add(time.Second * 10)
 	go observerInputMovement()
 	// clean function to be called
@@ -111,14 +102,12 @@ func setupCloseHandler() {
 // loading up configuration required
 func boostrap() {
 	parseDebug := flag.Bool("debug", false, "set debug")
+	parseLog := flag.Bool("log", false, "set debug")
 	flag.Parse()
 	debug = *parseDebug
+	logInfo = *parseLog
 	// check if db file exist, if not create one
 	touchFile("wfh.db")
-	agent = stackimpact.Start(stackimpact.Options{
-		AgentKey: "924ed3987351cf81f7af8b9431eff889720c6a13",
-		AppName:  "MyGoApp",
-	})
 
 }
 
