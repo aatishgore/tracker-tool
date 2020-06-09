@@ -66,7 +66,7 @@ func main() {
 	///	log.SetOutput(ioutil.Discard)
 
 	welcomeMessage()
-	requestMpin()
+	//requestMpin()
 	// call load up function
 	boostrap()
 
