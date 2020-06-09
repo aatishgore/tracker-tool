@@ -18,7 +18,7 @@ func load() {
 	// Create astilectron
 	a, err := astilectron.New(l, astilectron.Options{
 		AppName:           "Test",
-		BaseDirectoryPath: "example",
+		BaseDirectoryPath: ".neowfh",
 	})
 	if err != nil {
 		l.Fatal(fmt.Errorf("main: creating astilectron failed: %w", err))
@@ -33,7 +33,7 @@ func load() {
 		l.Fatal(fmt.Errorf("main: starting astilectron failed: %w", err))
 	}
 
-	if w, err = a.NewWindow("http://localhost:8000/", &astilectron.WindowOptions{
+	if w, err = a.NewWindow("http://estimations.php-dev.in/wfh/", &astilectron.WindowOptions{
 		Center: astikit.BoolPtr(true),
 		Height: astikit.IntPtr(700),
 		Width:  astikit.IntPtr(700),
