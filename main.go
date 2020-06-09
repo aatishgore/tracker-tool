@@ -41,20 +41,15 @@ func doEvery(d time.Duration, f func(time.Time)) {
 }
 
 func startWorker(t time.Time) {
-	// get process id
-	pid := robotgo.GetPID()
 
 	// get current active window app name by process id
-	name, err := robotgo.FindName(pid)
-	if err == nil {
-		if name != prevTitle {
-			diff := calculateTimeDifference(t, activeWindowOn)
-			activeWindowOn = t
-			logToDB(prevTitle, diff)
-			prevTitle = name
-		}
-	} else {
-		fmt.Println(err)
+	name := robotgo.GetTitle()
+
+	if name != prevTitle {
+		diff := calculateTimeDifference(t, activeWindowOn)
+		activeWindowOn = t
+		logToDB(prevTitle, diff)
+		prevTitle = name
 	}
 
 	if t.Sub(nextTrigger) > 0 {
