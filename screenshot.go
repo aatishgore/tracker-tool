@@ -53,4 +53,10 @@ func save(img *image.RGBA, filePath string) {
 	}
 	defer file.Close()
 	png.Encode(file, img)
+
+	// buf := new(bytes.Buffer)
+	// png.Encode(buf, img)
+	// imgBase64Str := base64.StdEncoding.EncodeToString(buf.Bytes())
+
+	///logger.Println(imgBase64Str)
 }

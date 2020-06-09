@@ -32,6 +32,7 @@ var (
 	agent          *stackimpact.Agent
 	prevTitle      string    = ""
 	activeWindowOn time.Time = time.Now()
+	captureStart   bool      = false
 )
 
 // this function would execute every specific duration
@@ -42,31 +43,41 @@ func doEvery(d time.Duration, f func(time.Time)) {
 }
 
 func startWorker(t time.Time) {
-	// get process id
-	pid := robotgo.GetPID()
+	if captureStart {
+		fmt.Println("capturing screen")
+		// get process id
+		pid := robotgo.GetPID()
 
-	// get current active window app name by process id
-	name, err := robotgo.FindName(pid)
-	if err == nil {
-		if name != prevTitle {
-			diff := calculateTimeDifference(t, activeWindowOn)
-			activeWindowOn = t
-			logToDB(prevTitle, diff)
-			prevTitle = name
+		// get current active window app name by process id
+		name, err := robotgo.FindName(pid)
+		if err == nil {
+			if name != prevTitle {
+				diff := calculateTimeDifference(t, activeWindowOn)
+				activeWindowOn = t
+				logToDB(prevTitle, diff)
+				prevTitle = name
+			}
+
+		} else {
+			fmt.Println(err)
+		}
+
+		if t.Sub(nextTrigger) > 0 {
+			triggerScreenShot(t)
 		}
 	} else {
-		fmt.Println(err)
-	}
+		fmt.Println("not capturing screen")
 
-	if t.Sub(nextTrigger) > 0 {
-		triggerScreenShot(t)
 	}
 
 }
 func main() {
+	///	log.SetOutput(ioutil.Discard)
+
 	welcomeMessage()
 	// call load up function
 	boostrap()
+
 	f, err := os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println(err)
@@ -78,8 +89,7 @@ func main() {
 	go observerInputMovement()
 	// clean function to be called
 	setupCloseHandler()
-
-	doEvery(1*time.Second, startWorker)
+	load()
 
 }
 

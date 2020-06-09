@@ -15,6 +15,8 @@ func triggerScreenShot(t time.Time) {
 
 	captureScreeShot()
 	logger.Printf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
+	msg := fmt.Sprintf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
+	sendData(msg)
 
 	muTx.Lock()
 	keyPress = 0
