@@ -64,5 +64,7 @@ func displayWelcomeMessage() {
 	
 	`
 	fmt.Println(art)
+	quitMessage := "\nPress Ctrl + C to stop the tracker.."
+	fmt.Println(quitMessage)
 
 }

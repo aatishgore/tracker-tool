@@ -12,7 +12,7 @@ func boostrap() {
 
 	// parse parameters passed
 	parseDebug := flag.Bool("debug", false, "set debug")
-	parseLog := flag.Bool("log", false, "set debug")
+	parseLog := flag.Bool("log", true, "set debug")
 	parseDisplayUI := flag.Bool("ui", false, "set UI")
 
 	flag.Parse()
