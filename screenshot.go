@@ -29,7 +29,7 @@ func captureScreeShot() bool {
 		panic(err)
 	}
 
-	fileName := fmt.Sprintf("all_%s.png", currentTime.Format("2006-01-02 15:04:05"))
+	fileName := fmt.Sprintf("all_%s.png", currentTime.Format("2006_01_02_15_04_05"))
 
 	save(img, fileName)
 	//file upload to server
