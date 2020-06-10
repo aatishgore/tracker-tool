@@ -20,7 +20,7 @@ func runCommand() string {
 	for _, ln := range activeProcessOutput {
 		if len(r.FindString(ln)) > 0 {
 			fetchPid := strings.Split(ln, "0x")
-			pid = "x0" + strings.TrimSpace(fetchPid[1])
+			pid = "0x" + strings.TrimSpace(fetchPid[1])
 			break
 		}
 
@@ -28,7 +28,7 @@ func runCommand() string {
 	if pid == "" {
 		return ""
 	}
-	args1 := []string{"-id", "x0" + pid}
+	args1 := []string{"-id", pid}
 
 	processInfo, err1 := exec.Command("xprop", args1...).Output()
 	if err1 != nil {
