@@ -80,9 +80,6 @@ func startWorker(t time.Time) {
 func main() {
 
 	log.SetOutput(ioutil.Discard)
-	if runtime.GOOS == "linux" {
-		runCommand()
-	}
 	welcomeMessage()
 	//requestMpin()
 	// call load up function
