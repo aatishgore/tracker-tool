@@ -10,28 +10,25 @@ import (
 	"github.com/kbinani/screenshot"
 )
 
-func captureScreeShot() {
+func captureScreeShot() bool {
 	currentTime := time.Now()
 	// Capture each displays.
 	n := screenshot.NumActiveDisplays()
 	if n <= 0 {
-		panic("Active display not found")
+		return false
 	}
 
-	time.Sleep(10 * time.Second)
-
 	var all image.Rectangle = image.Rect(0, 0, 0, 0)
-
 	for i := 0; i < n; i++ {
 		bounds := screenshot.GetDisplayBounds(i)
 		all = bounds.Union(all)
 	}
-
 	// Capture all desktop region into an image.
 	img, err := screenshot.Capture(all.Min.X, all.Min.Y, all.Dx(), all.Dy())
 	if err != nil {
 		panic(err)
 	}
+
 	fileName := fmt.Sprintf("all_%s.png", currentTime.Format("2006-01-02 15:04:05"))
 
 	save(img, fileName)
@@ -43,10 +40,12 @@ func captureScreeShot() {
 
 	// filePath := filepath.Join(path, fileName)
 	// uploadFile(filePath)
+	return true
 }
 
 // save *image.RGBA to filePath with PNG format.
 func save(img *image.RGBA, filePath string) {
+	filePath = "screenshots/" + filePath
 	file, err := os.Create(filePath)
 	if err != nil {
 		panic(err)

@@ -60,10 +60,10 @@ func load() {
 
 		switch s {
 		case "start":
-			captureStart = true
+			trackingStart = true
 			break
 		case "stop":
-			captureStart = false
+			trackingStart = false
 			break
 		default:
 			fmt.Println("unassigned message")

@@ -21,9 +21,10 @@ func openDb() *sql.DB {
 	return database
 }
 
-func logToDB(window string, time int) {
+// TODO: if more than one table create model
+func logUserActivityInDB(window string, time int) {
 	database := openDb()
-	statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY, window TEXT, time TEXT)")
+	statement, _ := database.Prepare("CREATE TABLE IF NOT EXISTS people (id INTEGER PRIMARY KEY, window TEXT, time TEXT,timestamp DATE DEFAULT (datetime('now','localtime')))")
 	statement.Exec()
 	statement, _ = database.Prepare("INSERT INTO people (window, time) VALUES (?, ?)")
 	statement.Exec(window, time)
@@ -32,14 +33,17 @@ func logToDB(window string, time int) {
 
 func copyToLog() {
 	database := openDb()
-	rows, _ := database.Query("SELECT window, sum(time) as time FROM people group by window")
+	rows, _ := database.Query("SELECT window, date(timestamp) as day ,sum(time) as time FROM people group by window, day")
 
-	var window string
-	var time string
+	var (
+		window string
+		time   string
+		day    string
+	)
 	for rows.Next() {
-		rows.Scan(&window, &time)
+		rows.Scan(&window, &day, &time)
 		if logInfo {
-			logger.Println("window :" + window + " time: " + time)
+			logger.Println("date:" + day + "window :" + window + " time: " + time)
 		}
 	}
 	statement, _ := database.Prepare("DELETE FROM people")
