@@ -9,7 +9,7 @@ import (
 
 // this function call an api to mis server and confirm user authentication
 func authenticateUserWithMPIN() {
-	got, ok := inputbox.InputBox("Dialog title", "Type a number", "abc")
+	got, ok := inputbox.InputBox("MPin Request", "Enter your mPin from connecto", "")
 	if ok {
 		mpin = got
 	} else {
