@@ -16,8 +16,8 @@ type activeWindow struct {
 }
 
 var (
-	keyPress      int = 0
-	mouseMovement int = 0
+	keyPress      int
+	mouseMovement int
 	nextTrigger   time.Time
 	debug         bool
 	logInfo       bool
@@ -25,12 +25,12 @@ var (
 	muTx          = &sync.Mutex{}
 	logger        *log.Logger
 
-	prevTitle                string    = ""
+	prevTitle                string
 	activeWindowOn           time.Time = time.Now()
 	trackingStart            bool      = false
-	mpin                     string    = ""
-	minWaitTimeForScreenShot int       = 5
-	maxWaitTimeForScreenShot int       = 15
+	mpin                     string
+	minWaitTimeForScreenShot int = 5
+	maxWaitTimeForScreenShot int = 15
 )
 
 func main() {

@@ -27,7 +27,7 @@ func trackPeripheralDevice() {
 // this function stores active window information like how much time was spend on specific window
 func storeCurrentActiveWindowName(t time.Time) {
 	var (
-		activeWindowName string = ""
+		activeWindowName string
 		err              error
 	)
 

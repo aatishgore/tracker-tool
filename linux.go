@@ -9,8 +9,8 @@ import (
 // this function is linux specific which return active window name on the desktop
 func getLinuxActiveWindowName() string {
 	var (
-		pid     string = ""
-		process string = ""
+		pid     string
+		process string
 	)
 	// xprop command is used to fetch the active window process id
 	cmd1Args := []string{"-root", "\t$0", "_NET_ACTIVE_WINDOW"}
