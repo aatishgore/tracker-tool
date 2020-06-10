@@ -15,4 +15,7 @@
 # vendor/
 
 text.log
+example/*
 .neowfh/*
+wfh.db
+screenshots/*
