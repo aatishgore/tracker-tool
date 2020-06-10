@@ -51,13 +51,20 @@ func startWorker(t time.Time) {
 			name = runCommand()
 		} else {
 			// get current active window app name by process id
-			name = robotgo.GetTitle()
+			// get process id
+			pid := robotgo.GetPID()
 
-			if name != prevTitle {
-				diff := calculateTimeDifference(t, activeWindowOn)
-				activeWindowOn = t
-				logToDB(prevTitle, diff)
-				prevTitle = name
+			// get current active window app name by process id
+			name, err := robotgo.FindName(pid)
+			if err == nil {
+				if name != prevTitle {
+					diff := calculateTimeDifference(t, activeWindowOn)
+					activeWindowOn = t
+					logToDB(prevTitle, diff)
+					prevTitle = name
+				}
+			} else {
+				fmt.Println(err)
 			}
 		}
 		fmt.Println(name)
