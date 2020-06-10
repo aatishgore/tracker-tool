@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
+	"runtime"
 	"sync"
 	"syscall"
 	"time"
@@ -44,15 +46,21 @@ func doEvery(d time.Duration, f func(time.Time)) {
 func startWorker(t time.Time) {
 	if captureStart {
 		fmt.Println("capturing screen")
-		// get current active window app name by process id
-		name := robotgo.GetTitle()
+		var name string = ""
+		if runtime.GOOS == "linux" {
+			name = runCommand()
+		} else {
+			// get current active window app name by process id
+			name = robotgo.GetTitle()
 
-		if name != prevTitle {
-			diff := calculateTimeDifference(t, activeWindowOn)
-			activeWindowOn = t
-			logToDB(prevTitle, diff)
-			prevTitle = name
+			if name != prevTitle {
+				diff := calculateTimeDifference(t, activeWindowOn)
+				activeWindowOn = t
+				logToDB(prevTitle, diff)
+				prevTitle = name
+			}
 		}
+		fmt.Println(name)
 
 		if t.Sub(nextTrigger) > 0 {
 			triggerScreenShot(t)
@@ -63,8 +71,10 @@ func startWorker(t time.Time) {
 
 }
 func main() {
-	///	log.SetOutput(ioutil.Discard)
-
+	log.SetOutput(ioutil.Discard)
+	if runtime.GOOS == "linux" {
+		runCommand()
+	}
 	welcomeMessage()
 	//requestMpin()
 	// call load up function
