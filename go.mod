@@ -9,6 +9,7 @@ require (
 	github.com/bhendo/go-powershell v0.0.0-20190719160123-219e7fb4e41e // indirect
 	github.com/gen2brain/shm v0.0.0-20200228170931-49f9650110c5 // indirect
 	github.com/go-vgo/robotgo v0.90.2
+	github.com/gorilla/websocket v1.4.2
 	github.com/juju/errors v0.0.0-20200330140219-3fe23663418f // indirect
 	github.com/kbinani/screenshot v0.0.0-20191211154542-3a185f1ce18f
 	github.com/martinlindhe/inputbox v0.0.0-20200313123801-5532e940e508

@@ -19,3 +19,4 @@ example/*
 .neowfh/*
 wfh.db
 screenshots/*
+node_modules/*

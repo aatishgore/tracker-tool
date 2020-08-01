@@ -7,6 +7,15 @@ import (
 	"time"
 )
 
+func saveLogs() {
+
+	logger.Printf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
+	muTx.Lock()
+	keyPress = 0
+	mouseMovement = 0
+	muTx.Unlock()
+}
+
 func triggerScreenShot(t time.Time) {
 
 	captureStatus := captureScreeShot()
@@ -14,24 +23,11 @@ func triggerScreenShot(t time.Time) {
 	if !captureStatus {
 		logger.Printf("No active screen found")
 	}
-	msg := fmt.Sprintf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
-	if displayUI {
-		sendData(msg)
-	}
-
-	if logInfo {
-		logger.Printf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
-	}
-	muTx.Lock()
-	keyPress = 0
-	mouseMovement = 0
-	muTx.Unlock()
-
 	randNumber := rand.Intn(maxWaitTimeForScreenShot-minWaitTimeForScreenShot) + minWaitTimeForScreenShot
-	nextTrigger = t.Add(time.Minute * time.Duration(randNumber))
+	screenShotTrigger = t.Add(time.Minute * time.Duration(randNumber))
 	if debug {
 		fmt.Printf("\n ScreenShot Captured @ %s \n", t.Format("2006-01-02 15:04:05"))
-		fmt.Printf("\n Next Trigger @ %s \n", nextTrigger.Format("2006-01-02 15:04:05"))
+		fmt.Printf("\n Next Trigger @ %s \n", screenShotTrigger.Format("2006-01-02 15:04:05"))
 	}
 }
 func openOrCreateFile(name string, closeFile bool) (*os.File, error) {

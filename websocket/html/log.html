@@ -1,0 +1,25 @@
+<pre id="output"></pre>
+<script>
+  var input = document.getElementById("input");
+  var output = document.getElementById("output");
+  var socket = new WebSocket("ws://localhost:8252/echo");
+
+  socket.onopen = function () {
+    output.innerHTML += "Status: Connected\n";
+    let data = JSON.stringify({ "channel":"start","message":{ "status": "Welcome from server !!!!" }});
+    socket.send(data);
+  };
+
+  socket.onmessage = function (e) {
+    var data = JSON.parse(e.data);
+    output.innerHTML += "Server: " + e.data + "\n";
+    console.log(data);
+  };
+  function sendData(status) {
+    let data = JSON.stringify({ "channel":"wfh","message":{"start": status }});
+    socket.send(data);
+  }
+</script>
+
+<button onclick="sendData(true)" >Start</button>
+<button onclick="sendData(false)" >Stop</button>

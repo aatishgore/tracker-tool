@@ -8,6 +8,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type activeWindow struct {
@@ -16,14 +18,13 @@ type activeWindow struct {
 }
 
 var (
-	keyPress      int
-	mouseMovement int
-	nextTrigger   time.Time
-	debug         bool
-	logInfo       bool
-	displayUI     bool
-	muTx          = &sync.Mutex{}
-	logger        *log.Logger
+	keyPress          int
+	mouseMovement     int
+	screenShotTrigger time.Time
+	debug             bool
+	logInfo           bool
+	muTx              = &sync.Mutex{}
+	logger            *log.Logger
 
 	prevTitle                string
 	activeWindowOn           time.Time = time.Now()
@@ -31,7 +32,14 @@ var (
 	mpin                     string
 	minWaitTimeForScreenShot int = 5
 	maxWaitTimeForScreenShot int = 15
+	gsConnWS                 []*websocket.Conn
+	gsMessageType            int
 )
+
+type socketMessage struct {
+	Channel string
+	Message string
+}
 
 func main() {
 	// disable log of electron js app
@@ -51,13 +59,9 @@ func main() {
 	}
 	// clean function to be called
 	setupCloseHandler()
-
-	if displayUI {
-		load()
-	} else {
-		doEvery(1*time.Second, startWorker)
-
-	}
+	fmt.Println("track data")
+	go socketInit()
+	doEvery(1*time.Second, startWorker)
 
 }
 
