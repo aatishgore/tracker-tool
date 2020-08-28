@@ -7,7 +7,7 @@ import (
 
 // loading up configuration required
 func boostrap() {
-
+	clearLogs()
 	displayWelcomeMessage()
 
 	// parse parameters passed

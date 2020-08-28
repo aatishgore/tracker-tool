@@ -31,7 +31,7 @@ func logUserActivityInDB(window string, time int) {
 	defer database.Close()
 }
 
-func copyToLog() {
+func getLogs() []windowLog {
 	database := openDb()
 	rows, _ := database.Query("SELECT window, date(timestamp) as day ,sum(time) as time FROM people group by window, day")
 
@@ -40,8 +40,11 @@ func copyToLog() {
 		time   string
 		day    string
 	)
+	var applogs = make([]windowLog, 0)
+
 	for rows.Next() {
 		rows.Scan(&window, &day, &time)
+		applogs = append(applogs, windowLog{AppName: window, Duration: time})
 		if logInfo {
 			logger.Println("date:" + day + "window :" + window + " time: " + time)
 		}
@@ -49,4 +52,32 @@ func copyToLog() {
 	statement, _ := database.Prepare("DELETE FROM people")
 	statement.Exec()
 	defer database.Close()
+	return applogs
+}
+
+func clearLogs() {
+	database := openDb()
+	statement, _ := database.Prepare("DELETE FROM people")
+	statement.Exec()
+	defer database.Close()
+}
+
+func copyToLog() {
+	// database := openDb()
+	// rows, _ := database.Query("SELECT window, date(timestamp) as day ,sum(time) as time FROM people group by window, day")
+
+	// var (
+	// 	window string
+	// 	time   string
+	// 	day    string
+	// )
+	// for rows.Next() {
+	// 	rows.Scan(&window, &day, &time)
+	// 	if logInfo {
+	// 		logger.Println("date:" + day + "window :" + window + " time: " + time)
+	// 	}
+	// }
+	// statement, _ := database.Prepare("DELETE FROM people")
+	// statement.Exec()
+	// defer database.Close()
 }

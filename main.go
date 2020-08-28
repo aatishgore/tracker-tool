@@ -17,6 +17,21 @@ type activeWindow struct {
 	activeWindow string
 }
 
+type windowLog struct {
+	AppName  string `json:"appName"`
+	Duration string `json:"duration"`
+}
+
+type logRequest struct {
+	AppLogs  []windowLog `json:"app_logs"`
+	Mouse    int         `json:"mouse"`
+	Keyboard int         `json:"keyboard"`
+}
+
+type imageRequest struct {
+	Base64Image string `json:"base64_image"`
+}
+
 var (
 	keyPress          int
 	mouseMovement     int
@@ -31,9 +46,10 @@ var (
 	trackingStart            bool      = false
 	mpin                     string
 	minWaitTimeForScreenShot int = 5
-	maxWaitTimeForScreenShot int = 15
+	maxWaitTimeForScreenShot int = 10
 	gsConnWS                 []*websocket.Conn
 	gsMessageType            int
+	token                    string
 )
 
 type socketMessage struct {
@@ -74,9 +90,6 @@ func setupCloseHandler() {
 		now := time.Now()
 		diff := calculateTimeDifference(now, activeWindowOn)
 		logUserActivityInDB(prevTitle, diff)
-		fmt.Println("\r- Clean up your data")
-		// TODO: Change this api call on exist
-		copyToLog()
 		os.Exit(0)
 	}()
 }

