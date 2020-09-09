@@ -28,6 +28,10 @@ type logRequest struct {
 	Keyboard int         `json:"keyboard"`
 }
 
+type encryptedLogRequest struct {
+	Data string `json:"data"`
+}
+
 type imageRequest struct {
 	Base64Image string `json:"base64_image"`
 }
