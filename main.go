@@ -54,6 +54,7 @@ var (
 	gsConnWS                 []*websocket.Conn
 	gsMessageType            int
 	token                    string
+	encryptionKey            string = "n30WF|-|"
 )
 
 type socketMessage struct {
