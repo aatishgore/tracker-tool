@@ -17,7 +17,7 @@ func startWorker(t time.Time) {
 		}
 
 		if true {
-			fmt.Println("capturing screen @", t.Format("2006-01-02 15:04:05"))
+			fmt.Println("capturing screen @", screenShotTrigger)
 		}
 		storeCurrentActiveWindowName(t)
 		if t.Sub(screenShotTrigger) > 0 {
