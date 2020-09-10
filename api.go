@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-var basURL string = "http://180.149.241.208:3000/api/v1/manage/"
+var basURL string = "http://180.149.241.208:3039/api/v1/manage/"
 
 func sendLogs() {
 	appLogs := getLogs()
