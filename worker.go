@@ -15,8 +15,11 @@ func startWorker(t time.Time) {
 		if min%10 == 0 && sec == 0 {
 			sendLogs()
 		}
+		if debug {
+			fmt.Printf("\n Sending Log @ %d %d\n", min, sec)
+		}
 
-		if true {
+		if debug {
 			fmt.Println("capturing screen @", screenShotTrigger)
 		}
 		storeCurrentActiveWindowName(t)

@@ -8,8 +8,6 @@ import (
 )
 
 func saveLogs() {
-
-	logger.Printf(" KeyPressed: %v and Mouse moved: %v", keyPress, mouseMovement)
 	muTx.Lock()
 	keyPress = 0
 	mouseMovement = 0

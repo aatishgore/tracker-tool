@@ -57,7 +57,7 @@ func getLogs() []windowLog {
 
 func clearLogs() {
 	database := openDb()
-	statement, _ := database.Prepare("DELETE FROM people")
+	statement, _ := database.Prepare("drop table if exists people")
 	statement.Exec()
 	defer database.Close()
 }

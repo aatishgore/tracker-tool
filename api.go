@@ -29,6 +29,8 @@ func sendLogs() {
 
 		payload := strings.NewReader(string(jsonDataPayload))
 		apiCall(url, "POST", payload)
+
+		fmt.Printf("\n Send Log API called \n")
 	}
 
 }

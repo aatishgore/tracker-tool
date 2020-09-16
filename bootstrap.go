@@ -11,7 +11,7 @@ func boostrap() {
 	displayWelcomeMessage()
 
 	// parse parameters passed
-	parseDebug := flag.Bool("debug", false, "set debug")
+	parseDebug := flag.Bool("debug", true, "set debug")
 	parseLog := flag.Bool("log", true, "set debug")
 	flag.Parse()
 	debug = *parseDebug
