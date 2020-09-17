@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -80,7 +79,6 @@ func main() {
 	}
 	// clean function to be called
 	setupCloseHandler()
-	fmt.Println("track data")
 	go socketInit()
 	doEvery(1*time.Second, startWorker)
 

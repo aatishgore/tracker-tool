@@ -20,7 +20,7 @@ func sendLogs() {
 
 		jsonData, _ := json.Marshal(request)
 		url := basURL + "logs/add-log-data"
-
+		logger.Println("sending logs with data:", string(jsonData))
 		encryptedPayload := &encryptedLogRequest{
 			Data: keyEncrypt(encryptionKey, string(jsonData)),
 		}
@@ -29,8 +29,6 @@ func sendLogs() {
 
 		payload := strings.NewReader(string(jsonDataPayload))
 		apiCall(url, "POST", payload)
-
-		fmt.Printf("\n Send Log API called \n")
 	}
 
 }

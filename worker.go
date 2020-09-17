@@ -11,6 +11,7 @@ func startWorker(t time.Time) {
 		layOut := "2006-01-02 15:04:05"
 		timeStamp, _ := time.Parse(layOut, timeStampString)
 		_, min, sec := timeStamp.Clock()
+		fmt.Println("min", min, "sec", sec)
 
 		if min%10 == 0 && sec == 0 {
 			sendLogs()

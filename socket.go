@@ -38,9 +38,8 @@ func reader(ConnWS *websocket.Conn) {
 		// message := response["data"].(map[string]interface{})
 
 		var result map[string]interface{}
-		for key, value := range response {
+		for _, value := range response {
 			// Each value is an interface{} type, that is type asserted as a string
-			fmt.Println(key, value)
 			json.Unmarshal([]byte(value.(string)), &result)
 
 		}
@@ -95,7 +94,7 @@ func socketInit() {
 	http.ListenAndServe(":8252", nil)
 
 }
-func Notify(message string) {
+func notify(message string) {
 	msg := []byte(message)
 	fmt.Println("Active connections %v", len(gsConnWS))
 	for _, conn := range gsConnWS {
@@ -108,11 +107,11 @@ func Notify(message string) {
 	}
 }
 
-func SendNotification(code string, message string) {
+func sendNotification(code string, message string) {
 	bytes, _ := json.Marshal(socketMessage{
 		code,
 		message,
 	})
 
-	Notify(string(bytes))
+	notify(string(bytes))
 }

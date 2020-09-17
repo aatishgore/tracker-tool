@@ -68,13 +68,3 @@ func decrypt(key []byte, cryptoText string) string {
 	stream.XORKeyStream(ciphertext, ciphertext)
 	return fmt.Sprintf("%s", ciphertext)
 }
-
-func main1() {
-	encrypted := "5XU9rQ4jjLwd/ZYlPz058rOxYRf+CwZDEA=="
-
-	fmt.Println(encrypted)
-	fmt.Println(keyDecrypt("SecretKey", encrypted))
-
-	encrypt := "{data: {message: 'Hello World!'}}"
-	fmt.Println(keyEncrypt("#(04@@3N34", encrypt))
-}
