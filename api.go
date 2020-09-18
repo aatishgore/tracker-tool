@@ -41,7 +41,7 @@ func sendScreenShot(base64Image string) {
 		}
 		jsonData, _ := json.Marshal(request)
 		url := basURL + "image-logs"
-
+		logger.Println("sending screenshot")
 		payload := strings.NewReader(string(jsonData))
 		apiCall(url, "POST", payload)
 	}

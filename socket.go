@@ -38,8 +38,10 @@ func reader(ConnWS *websocket.Conn) {
 		// message := response["data"].(map[string]interface{})
 
 		var result map[string]interface{}
-		for _, value := range response {
+		for key, value := range response {
 			// Each value is an interface{} type, that is type asserted as a string
+			fmt.Println(key, value)
+
 			json.Unmarshal([]byte(value.(string)), &result)
 
 		}

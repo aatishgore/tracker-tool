@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"image"
 	"image/png"
-	"os"
 	"time"
 
 	"github.com/kbinani/screenshot"
@@ -47,13 +46,13 @@ func captureScreeShot() bool {
 
 // save *image.RGBA to filePath with PNG format.
 func save(img *image.RGBA, filePath string) {
-	filePath = "screenshots/" + filePath
-	file, err := os.Create(filePath)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	png.Encode(file, img)
+	// filePath = "screenshots/" + filePath
+	// file, err := os.Create(filePath)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer file.Close()
+	// png.Encode(file, img)
 
 	buf := new(bytes.Buffer)
 	png.Encode(buf, img)
